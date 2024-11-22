@@ -1,16 +1,16 @@
 import os, json, tiktoken
 from collections import Counter
 
-MAX_TOKENS = 200 #token count here
+MAX_TOKENS = 200 # token count here
 
 # Function to estimate token count (using tiktoken for accurate tokenization)
 def estimate_tokens(text):
-    enc = tiktoken.get_encoding("cl100k_base")  # Use the encoding that corresponds to your model
+    enc = tiktoken.get_encoding("cl100k_base")
     tokens = enc.encode(text)
     return len(tokens)
 
 # Function to add reviews to a structured object instead of a global string
-def add_to_object(data, result_object):
+def add_data(data, result):
     groups = {}
 
     for review in data["Reviews"]:
@@ -47,7 +47,7 @@ def add_to_object(data, result_object):
     if annotation == [''] or annotation == []:
         return
 
-    # Prepare data to be added to the result_object
+    # Prepare data to be added to the result
     app_data = {
         "name": data.get("App Name"),
         "labels": annotation,
@@ -65,7 +65,7 @@ def add_to_object(data, result_object):
             reviews_concatenated += review  # Append review to concatenated string
 
     app_data["reviews"] = reviews_concatenated
-    result_object.append(app_data)  # Add this app's data to the result_object
+    result.append(app_data)  # Add this app's data to the result
 
 # Function to sort data based on Ranking Score
 def sort_data(data):
@@ -80,7 +80,7 @@ def load_data(file_path):
 
 # Function to process the directory and return an object instead of writing to a file
 def process_directory(input_dir, output_dir):
-    result_object = []  # Initialize the result object to store processed data
+    result = []  # Initialize the result object to store processed data
     
     # Iterate over all JSON files in the input directory
     files_processed = False
@@ -92,12 +92,12 @@ def process_directory(input_dir, output_dir):
 
             data = load_data(file_path)  # Load the data
             if data:
-                add_to_object(data, result_object)  # Add processed data to result_object
+                add_data(data, result)  # Add processed data to result
 
     if not files_processed:
         print(f"No JSON files found in {input_dir}")
     
-    return result_object  # Return the processed data object
+    return result  # Return the processed data object
 
 # Main function
 if __name__ == "__main__":
@@ -105,15 +105,15 @@ if __name__ == "__main__":
     input_dir = 'Data/SimilarityData'
     output_dir = 'Data/CompleteData'
     
-    result_object = process_directory(input_dir, output_dir)
+    result = process_directory(input_dir, output_dir)
 
     # Print the final object for debugging or further use
-    print("Processed data:", result_object)
+    print("Processed data:", result)
 
-    # You can also save the result_object to a file if needed (optional)
+    # You can also save the result to a file if needed (optional)
     output_file_path = os.path.join(output_dir, "StringData.json")
     with open(output_file_path, 'w', encoding='utf-8') as file:
-        json.dump(result_object, file, ensure_ascii=False, indent=4)
+        json.dump(result, file, ensure_ascii=False, indent=4)
     print(f'Processed and saved to {output_file_path}')
     
     print(f"Keyword extraction completed.")
