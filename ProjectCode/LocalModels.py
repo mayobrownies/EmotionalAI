@@ -64,7 +64,7 @@ for app in data:
     data_string += f"labels:{labels}\n"
     data_string += f"reviews:{reviews}\n"
     data_string += f"sentiment:{sentiment}\n"
-    data_string += "\n"  # Optional extra newline for better separation of entries
+    data_string += "\n" 
 
 text_path = "C:/Emotional AI/Data/CompleteData/output.txt"
 
