@@ -52,7 +52,6 @@ def process_directory(input_dir, dataset_file):
     overall_match_percentage = (total_matches / total_annotations) * 100
     print(f"Overall Match Percentage: {overall_match_percentage:.2f}% of LLM annotations match the dataset.")
 
-# Usage
-dataset_file = "C:/Emotional AI/Data/CompleteData/SortedData.json"  # Ensure this is a .json file
+dataset_file = "C:/Emotional AI/Data/CompleteData/SortedData.json"
 input_dir = "C:/Emotional AI/Data/ModelData/mistral_latest"
 process_directory(input_dir, dataset_file)
