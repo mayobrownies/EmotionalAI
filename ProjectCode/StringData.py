@@ -2,7 +2,7 @@ import os, json, tiktoken
 from collections import Counter
 
 # set max token count for reviews
-MAX_TOKENS = 200 
+MAX_TOKENS = 0
 
 # estimate number of tokens
 def estimate_tokens(text):
@@ -51,6 +51,8 @@ def add_to_object(data, result_object):
 
     app_data = {
         "name": data.get("App Name"),
+        "developer": data.get("Developer"),
+        "rating": data.get("Ratings"),
         "labels": annotation,
         "reviews": [],
         "sentiment": data["Total Sentiment"]["sentiment"]
@@ -62,7 +64,7 @@ def add_to_object(data, result_object):
             if estimate_tokens(reviews_concatenated + review) > MAX_TOKENS:
                 continue
 
-            reviews_concatenated += review  
+            reviews_concatenated += review
 
     app_data["reviews"] = reviews_concatenated
     result_object.append(app_data) 
@@ -99,7 +101,7 @@ if __name__ == "__main__":
     input_dir = 'Data/SimilarityData'
     output_dir = 'Data/CompleteData'
     
-    result_object = process_directory(input_dir, output_dir)
+    result_object = process_directory(input_dir)
 
     print("Processed data:", result_object)
 

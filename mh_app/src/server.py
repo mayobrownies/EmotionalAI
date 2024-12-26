@@ -37,16 +37,19 @@ def process_query(query):
 
     for app in filtered_data:
         # remove unnecessary tokens and convert data to a string before sending to model
-        name = clean_text(app['name'])
-        labels = clean_text(' '.join(app['labels']))
-        reviews = clean_text(app['reviews'])
-        sentiment = clean_text(str(app['sentiment']))
+        name = clean_text(app.get("name", ""))
+        developer = clean_text(app.get("developer", ""))
+        rating = app.get("rating", "")
+        labels = clean_text(" ".join(app.get("labels", [])))
+        reviews = clean_text(app.get("reviews", ""))
+        sentiment = clean_text(str(app.get("sentiment", "")))
 
-        data_string += f"name:{name}\n"
-        data_string += f"labels:{labels}\n"
-        data_string += f"reviews:{reviews}\n"
-        data_string += f"sentiment:{sentiment}\n"
-        data_string += "\n"
+        data_string += f"name: {name}\n"
+        data_string += f"developer: {developer}\n"
+        data_string += f"rating: {rating}\n"
+        data_string += f"labels: {labels}\n"
+        data_string += f"reviews: {reviews}\n"
+        data_string += f"sentiment: {sentiment}\n\n"
 
     text_path = "C:/Emotional AI/Data/CompleteData/output.txt"
 
